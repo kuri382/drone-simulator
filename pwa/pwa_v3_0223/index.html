@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+        <title>PWA Sample</title>
+
+        <!-- スクリプトから追加するため削除 -->
+        <!-- <link rel="manifest" href="manifest.json"> -->
+        <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+        <link rel="apple-touch-icon" href="image/apple-touch-icon.png" sizes="192x192">
+        <style>
+            body {
+              /* set margin to 0 and overflow to hidden, to go fullscreen */
+              /* スクロールバー除去 */
+              margin: 0;
+              overflow: hidden;
+              background-color:#d4ddf8;
+            }
+        </style>
+    </head>
+
+    <!--<script src="js/camera.js"></script>-->
+    <div id="app">
+        <p>{{ message }}</p>
+        <button v-on:click="reverseMessage">テスト:Reverse Message</button>
+        <p>画像キャッシュテスト</p>
+        <p>下の画像はオフライン時（機内モード）でも表示させるようキャッシュに追加</p>
+        <img src="./image/icon-256.png" alt="testimage" class="image" />
+    </div>
+
+    <body>
+        <Script>
+            // Detects if device is on iOS 
+            const isIos = () => {
+                const userAgent = window.navigator.userAgent.toLowerCase();
+                return /iphone|ipad|ipod/.test( userAgent );
+            }
+            // Detects if device is in standalone mode
+            const isInStandaloneMode = () => ('standalone' in window.navigator) && (window.navigator.standalone);
+
+            // Checks if should display install popup notification:
+            if (isIos() && !isInStandaloneMode()) {
+                this.setState({ showInstallMessage: true });
+                alert("ホーム画面に追加することで，アプリになります")
+            }
+        </Script>
+        <script>
+        
+        // manifestのlinkタグを生成
+        function setManifest(path) {
+            const manifest = document.createElement('link');
+            manifest.rel = 'manifest';
+            manifest.href = path;
+            document.head.appendChild(manifest);
+        }
+
+        // OSに応じて読み込むmanifestを変更
+        var userAgent = navigator.userAgent.toLowerCase();
+        if (userAgent.indexOf("iphone") > 0 || userAgent.indexOf("ipad") > 0) {
+            setManifest('manifest_ios.json')
+        } else {
+            setManifest('manifest.json')
+        }
+
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('service_worker.js').then(function(registration) {
+                console.log('ServiceWorker registration successful with scope: ', registration.scope);
+            }).catch(function(err) {
+                console.log('ServiceWorker registration failed: ', err);
+            });
+        }''
+
+        // vue.jsの設定関係
+        var app = new Vue({
+            el: '#app',
+            data: {
+                message: 'ホーム画面に追加することでPWAになる'
+            },
+            methods: {
+                reverseMessage: function () {
+                this.message = this.message.split('').reverse().join('')
+                }
+            }
+        });
+        </script>
+    </body>
+</html>

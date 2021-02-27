@@ -41,7 +41,7 @@ omega = Array(4).fill(0);
 omega[0] = omega_h*temp_throttle;
 omega[1] = omega_h*temp_throttle;
 omega[2] = omega_h*temp_throttle;
-omega[3] = omega_h*0;//temp_throttle;
+omega[3] = omega_h*temp_throttle;//temp_throttle;
 console.log(omega);
 
 //事前状態量・入力の記録

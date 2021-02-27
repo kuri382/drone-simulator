@@ -7,18 +7,6 @@ var drone_all = new THREE.Group();
 var sim_time = 0;
 var real_time = 0;
 
-//gui
-var guiSquare = function() {
-    this.color = "#ff0000";
-    this.width = 100;
-    this.height = 100;
-    this.border = false;
-    this.shadow = false;
-    this.addBox = function() {
-        //関数も作れる！
-    }
-};
-
 //シミュレーション用変数
 let sim_pos_x, sim_pos_y , sim_pos_z; 
 let sim_vel_x, sim_vel_y , sim_vel_z; 

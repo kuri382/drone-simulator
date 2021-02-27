@@ -1,3 +1,12 @@
+var container, scene, camera, renderer;
+var controls;
+var sphere, player;
+var drone_angle;
+//ドローン設定
+var drone_all = new THREE.Group();
+var sim_time = 0;
+var real_time = 0;
+
 // ページの読み込みを待つ
 window.addEventListener('load', init);
 
@@ -8,19 +17,19 @@ const width = window.innerWidth;
 const height = window.innerWidth;
 
 // レンダラーを作成
-const renderer = new THREE.WebGLRenderer({
+renderer = new THREE.WebGLRenderer({
   canvas: document.querySelector('#myCanvas')
 });
 renderer.setPixelRatio(window.devicePixelRatio);
 renderer.setSize(width, height);
 
 // シーンを作成
-const scene = new THREE.Scene();
+scene = new THREE.Scene();
 
 // カメラを作成
-const camera = new THREE.PerspectiveCamera(45, width / height);
+camera = new THREE.PerspectiveCamera(45, width / height);
 camera.position.set(0, 0, +1000);
-const controls = new THREE.OrbitControls(camera);
+controls = new THREE.OrbitControls(camera);
 
 // 箱を作成
 const geometry = new THREE.BoxGeometry(400, 400, 400);
@@ -28,13 +37,13 @@ const material = new THREE.MeshNormalMaterial();
 const box = new THREE.Mesh(geometry, material);
 scene.add(box);
 
-tick();
+animate();
 
-// 毎フレーム時に実行されるループイベントです
-function tick() {
+// 毎フレーム時に実行されるループイベント
+function animate() {
   box.rotation.y += 0.01;
   renderer.render(scene, camera); // レンダリング
 
-  requestAnimationFrame(tick);
+  requestAnimationFrame(animate);
 }
 }

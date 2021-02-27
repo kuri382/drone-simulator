@@ -13,6 +13,7 @@
             overflow: hidden;
             background: black;
         }
+
     </style>
     <script>
     //スクロール禁止
@@ -28,16 +29,17 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <link rel="apple-touch-icon" href="images/apple-touch-icon.png" sizes="192x192">
 
+    <!--js libraries-->
     <script type="text/javascript" src="js/main.js"></script>
     <script type="text/javascript" src="js/pwaInit.js"></script>
 
     <script type="text/javascript" src="js/three.js"></script>
-
-    
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/dat-gui/0.7.7/dat.gui.min.js"></script>
     <script type="text/javascript" src="js/OrbitControls.js"></script>
-    <script type="text/javascript" src="js/calc_kinematics_v1.js"></script>
 
+    <script type="text/javascript" src="js/calc_kinematics_v1.js"></script>
     <script type="text/javascript" src="js/draw_sp.js"></script>
+
 
     <!--
     <script type="text/javascript" src="js/draw_kinematics_v2_gui.js"></script>
@@ -48,7 +50,13 @@
 </head>
 
 <body>
-    <canvas id = "myCanvas"></canvas>
+    <div class="canvas-wrapper">
+        <canvas id = "myCanvas" style="z-index:0"></canvas>
+        <!--
+        <canvas id="ui">
+            <h1 style="color: black; z-index:1;">Sim Drone</h1>
+        </canvas>-->
+    </div>
 </body>
 
 </html>

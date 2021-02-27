@@ -16,6 +16,39 @@ let body_length = 2.5;
 let body_width = 0.15;
 let body_height = 0.05;
 
+//初期高度
+var pos_init_z = 4;
+
+
+/*
+var options = {
+  velx: 0,
+  vely: 0,
+  camera: {
+    speed: 0.0001
+  },
+  stop: function() {
+    this.velx = 0;
+    this.vely = 0;
+  },
+  reset: function() {
+    this.velx = 0.1;
+    this.vely = 0.1;
+    camera.position.z = 75;
+    camera.position.x = 0;
+    camera.position.y = 0;
+    cube.scale.x = 1;
+    cube.scale.y = 1;
+    cube.scale.z = 1;
+    cube.material.wireframe = true;
+  }
+};
+var gui = new dat.GUI();
+gui.add(options, 'stop');
+gui.add(options, 'reset');
+*/
+
+
 // ページの読み込みを待つ
 window.addEventListener('load', init);
 
@@ -38,7 +71,7 @@ function init() {
 
   // カメラ作成
   camera = new THREE.PerspectiveCamera(45, width / height, 1, 1000);
-  camera.position.set(5, 5, +10);
+  camera.position.set(5, 5, +30);
   camera.updateProjectionMatrix();
   controls = new THREE.OrbitControls(camera);
 
@@ -182,12 +215,9 @@ function init() {
 
   // 毎フレーム時に実行されるループイベント
   function animate() {
-    calcSim(sim_time);
-    sim_time += 1;
-
     //背景
-    //star.rotation.z += 0.001;
-    //star.rotation.x += 0.0001;
+    star.rotation.z += 0.001;
+    star.rotation.x += 0.0001;
     //ローター回転数
     rpm = 0.5;
     prop_1.rotation.y += rpm;
@@ -195,16 +225,31 @@ function init() {
     prop_3.rotation.y -= rpm;
     prop_4.rotation.y += rpm;
 
-    pos_init_z = 4;
+    calcSim(sim_time);
+    sim_time += 1;
+
     //ドローン位置
     if ((sim_pos_z + pos_init_z) <= 0){
-      drone_all.position = pos_init_z - sim_pos_z;
       console.log("ground");
+      sim_pos_x = 0;
+      sim_pos_y = 0;
       sim_pos_z = 0;
-
+      drone_all.position.y = 0;
+      
     } else {
+      //ドローンの現在高度
+      drone_all.position.x = sim_pos_x;
+      drone_all.position.z = sim_pos_y;
       drone_all.position.y = pos_init_z + sim_pos_z;
+      console.log(sim_ang_z);
+      drone_all.rotation.x = sim_ang_x;
+      drone_all.rotation.z = sim_ang_y;
+      drone_all.rotation.y = sim_ang_z;
     }
+    
+
+    //options
+    //var timer = Date.now() * options.camera.speed;
     
     
 

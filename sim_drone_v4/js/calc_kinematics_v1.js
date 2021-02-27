@@ -1,13 +1,11 @@
 // シミュレーション設定
 let sf = 60; //three.jsのfpsに合わせる
 let dt = 1/sf;
-//let time_sim = 1;
-//let step_sim = time_sim*sf;
 
 //記録用配列用意
 let col_X = 12      //状態変数
 let col_U = 4       //入力
-var temp_throttle = 0.6;
+var temp_throttle = 1.0;
 
 // 環境
 let const_g = 9.81;
@@ -17,10 +15,10 @@ let const_rho = 1.205;
 let l = 0.250; 
 let m = 1.25;
 //機体全体の慣性モーメント(実験値)
-let Ixx = 4.2*10^-3;
-let Iyy = 4.2*10^-3;
-let Izz = 8.1*10^-3;
-let jr = 0.5;
+let Ixx = 4.2*10**-3;
+let Iyy = 4.2*10**-3;
+let Izz = 8.1*10**-3;
+let jr = 0.0;
 let omega_r = 0;
 
 let param_b = 1.0;
@@ -36,12 +34,15 @@ temp_b1 = l / Ixx;
 temp_b2 = l / Iyy;
 temp_b3 = l / Izz;
 
-omega_h = (m*const_g/(4*param_b))^0.5;
+omega_h = (m*const_g/(4*param_b))**0.5;
+console.log(m, const_g, param_b, 2**0.5,omega_h);
 
 omega = Array(4).fill(0);
-for(let sim_time = 0; sim_time < 4; sim_time++){
-     omega[sim_time] = omega_h*temp_throttle;
-}
+omega[0] = omega_h*temp_throttle;
+omega[1] = omega_h*temp_throttle;
+omega[2] = omega_h*temp_throttle;
+omega[3] = omega_h*0;//temp_throttle;
+console.log(omega);
 
 //事前状態量・入力の記録
 X_before = Array(col_X).fill(0);
@@ -61,8 +62,6 @@ U0[3] = param_d * (-1*omega[0]**2 + omega[1]**2 - omega[2]**2 + omega[3]**2);
 
 for(let j = 0; j<col_X; j++){
     X_before[j] = X0[j];
-    console.log(X_before);
-    console.log(X0);
 }
 for(let j = 0; j<col_U; j++){
     U_before[j] = U0[j];
@@ -115,13 +114,13 @@ function calcSim(sim_time){
     //位置出力
     sim_pos_x =  X_after[8];
     sim_pos_y =  X_after[10];
-    sim_pos_z =  X_after[6];
+    sim_pos_z =  -1*X_after[6];
     sim_vel_x =  X_after[9];
     sim_vel_y =  X_after[11];
     sim_vel_z =  X_after[7];
     sim_ang_x =  X_after[0];
-    sim_ang_y =  X_after[2];
-    sim_ang_z =  X_after[4];
+    sim_ang_y =  X_after[4];
+    sim_ang_z =  X_after[2];
     sim_rate_x =  X_after[1];
     sim_rate_y =  X_after[3];
     sim_rate_z =  X_after[5];

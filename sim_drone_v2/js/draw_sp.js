@@ -3,37 +3,38 @@ window.addEventListener('load', init);
 
 function init() {
 
-  // サイズを指定
-  const width = 960;
-  const height = 540;
+// サイズを指定
+const width = window.innerWidth;
+const height = window.innerWidth;
 
-  // レンダラーを作成
-  const renderer = new THREE.WebGLRenderer({
-    canvas: document.querySelector('#myCanvas')
-  });
-  renderer.setPixelRatio(window.devicePixelRatio);
-  renderer.setSize(window.innerWidth, window.innerHeight);
+// レンダラーを作成
+const renderer = new THREE.WebGLRenderer({
+  canvas: document.querySelector('#myCanvas')
+});
+renderer.setPixelRatio(window.devicePixelRatio);
+renderer.setSize(width, height);
 
-  // シーンを作成
-  const scene = new THREE.Scene();
+// シーンを作成
+const scene = new THREE.Scene();
 
-  // カメラを作成
-  const camera = new THREE.PerspectiveCamera(45, width / height);
-  camera.position.set(0, 0, +1000);
+// カメラを作成
+const camera = new THREE.PerspectiveCamera(45, width / height);
+camera.position.set(0, 0, +1000);
+const controls = new THREE.OrbitControls(camera);
 
-  // 箱を作成
-  const geometry = new THREE.BoxGeometry(400, 400, 400);
-  const material = new THREE.MeshNormalMaterial();
-  const box = new THREE.Mesh(geometry, material);
-  scene.add(box);
+// 箱を作成
+const geometry = new THREE.BoxGeometry(400, 400, 400);
+const material = new THREE.MeshNormalMaterial();
+const box = new THREE.Mesh(geometry, material);
+scene.add(box);
 
-  tick();
+tick();
 
-  // 毎フレーム時に実行されるループイベントです
-  function tick() {
-    box.rotation.y += 0.01;
-    renderer.render(scene, camera); // レンダリング
+// 毎フレーム時に実行されるループイベントです
+function tick() {
+  box.rotation.y += 0.01;
+  renderer.render(scene, camera); // レンダリング
 
-    requestAnimationFrame(tick);
-  }
+  requestAnimationFrame(tick);
+}
 }

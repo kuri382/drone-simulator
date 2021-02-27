@@ -6,13 +6,23 @@ var drone_angle;
 //ドローン設定
 var drone_all = new THREE.Group();
 
+sim_pos_z = 3;
+
+let motor_radius = 0.07; //[m]
+let roter_radius = 0.4; //[m]
+let roter_height = 0.02; //[m]
+let distance_roter = 0.8; //[m]
+let body_length = 2.5;
+let body_width = 0.15;
+let body_height = 0.05;
+
 // ページの読み込みを待つ
 window.addEventListener('load', init);
 
 function init() {
   // サイズを指定
   const width = window.innerWidth;
-  const height = window.innerWidth;
+  const height = window.innerHeight;
 
   // レンダラーを作成
   renderer = new THREE.WebGLRenderer({
@@ -28,7 +38,8 @@ function init() {
 
   // カメラ作成
   camera = new THREE.PerspectiveCamera(45, width / height, 1, 1000);
-  camera.position.set(10, 10, +20);
+  camera.position.set(5, 5, +10);
+  camera.updateProjectionMatrix();
   controls = new THREE.OrbitControls(camera);
 
   // ライト作成
@@ -129,18 +140,12 @@ function init() {
     roter.position.set(x, z, y);
     drone_all.add( roter );
   }
-  let motor_radius = 0.07; //[m]
-  let roter_radius = 0.4; //[m]
-  let roter_height = 0.02; //[m]
-  let distance_roter = 0.5; //[m]
-  let body_length = 2;
-  let body_width = 0.2;
-  let body_height = 0.1;
+
   //ローター
-  drone_roter(roter_radius,roter_height, distance_roter, distance_roter,0.2,0xcccccc);
-  drone_roter(roter_radius,roter_height, distance_roter,-distance_roter,0.2,0xcccccc);
-  drone_roter(roter_radius,roter_height,-distance_roter,-distance_roter,0.2,0xcccccc);
-  drone_roter(roter_radius,roter_height,-distance_roter, distance_roter,0.2,0xcccccc);
+  //drone_roter(roter_radius,roter_height, distance_roter, distance_roter,0.2,0xcccccc);
+  //drone_roter(roter_radius,roter_height, distance_roter,-distance_roter,0.2,0xcccccc);
+  //drone_roter(roter_radius,roter_height,-distance_roter,-distance_roter,0.2,0xcccccc);
+  //drone_roter(roter_radius,roter_height,-distance_roter, distance_roter,0.2,0xcccccc);
   //モーター
   drone_roter(motor_radius,motor_radius, distance_roter, distance_roter,0.2,0x003366);
   drone_roter(motor_radius,motor_radius, distance_roter,-distance_roter,0.2,0x003366);
@@ -151,16 +156,57 @@ function init() {
   drone_body(body_length,body_height,body_width,0,0,0.15,-(Math.PI/4),0x336666);
   drone_body(0.8,0.2,0.4,0,0,0.0,0,0x000033);
   drone_body(0.6,0.1,0.5,0,0,0.0,0,0x003366);
+
+  //プロペラ1
+  const prop_material = new THREE.MeshStandardMaterial( {color: 0x336666} );
+  const prop_geometry = new THREE.BoxGeometry( 1.2, 0.01, 0.2);//radius, thickness, width
+  const prop_1 = new THREE.Mesh( prop_geometry, prop_material );
+  prop_1.position.set(distance_roter, roter_height+0.2, distance_roter);
+  drone_all.add( prop_1 );
+  //プロペラ2
+  const prop_2 = new THREE.Mesh( prop_geometry, prop_material );
+  prop_2.position.set(-distance_roter, roter_height+0.2, distance_roter);
+  drone_all.add( prop_2 );
+  //プロペラ3
+  const prop_3 = new THREE.Mesh( prop_geometry, prop_material );
+  prop_3.position.set(distance_roter, roter_height+0.2, -distance_roter);
+  drone_all.add( prop_3 );
+  //プロペラ4
+  const prop_4 = new THREE.Mesh( prop_geometry, prop_material );
+  prop_4.position.set(-distance_roter, roter_height+0.2, -distance_roter);
+  drone_all.add( prop_4 );
+  
   scene.add( drone_all)
 
   animate();
 
   // 毎フレーム時に実行されるループイベント
   function animate() {
-    star.rotation.z += 0.001;
-    star.rotation.x += 0.0001;
-    //drone_all.position.y = sim_poz_z * 0.01;
+    calcSim(sim_time);
+    sim_time += 1;
 
+    //背景
+    //star.rotation.z += 0.001;
+    //star.rotation.x += 0.0001;
+    //ローター回転数
+    rpm = 0.5;
+    prop_1.rotation.y += rpm;
+    prop_2.rotation.y -= rpm;
+    prop_3.rotation.y -= rpm;
+    prop_4.rotation.y += rpm;
+
+    pos_init_z = 4;
+    //ドローン位置
+    if ((sim_pos_z + pos_init_z) <= 0){
+      drone_all.position = pos_init_z - sim_pos_z;
+      console.log("ground");
+      sim_pos_z = 0;
+
+    } else {
+      drone_all.position.y = pos_init_z + sim_pos_z;
+    }
+    
+    
 
     renderer.render(scene, camera); // レンダリング
 

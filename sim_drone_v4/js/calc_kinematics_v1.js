@@ -1,25 +1,13 @@
 // シミュレーション設定
 let sf = 60; //three.jsのfpsに合わせる
 let dt = 1/sf;
-let time_sim = 1;
-let step_sim = time_sim*sf;
+//let time_sim = 1;
+//let step_sim = time_sim*sf;
 
 //記録用配列用意
 let col_X = 12      //状態変数
 let col_U = 4       //入力
 var temp_throttle = 0.6;
-
-/*
-let X_log = new Array(step_sim) //配列列数
-for(let sim_time = 0; sim_time < step_sim; sim_time++) {
-     X_log[sim_time] = new Array(col_X).fill(0); //配列行数
-}
-
-let U_log = new Array(step_sim) //配列列数
-for(let sim_time = 0; sim_time < step_sim; sim_time++) {
-     U_log[sim_time] = new Array(col_U).fill(0); //配列行数
-}
-*/
 
 // 環境
 let const_g = 9.81;
@@ -127,7 +115,7 @@ function calcSim(sim_time){
     //位置出力
     sim_pos_x =  X_after[8];
     sim_pos_y =  X_after[10];
-    sim_pos_z =  -1*X_after[6];
+    sim_pos_z =  X_after[6];
     sim_vel_x =  X_after[9];
     sim_vel_y =  X_after[11];
     sim_vel_z =  X_after[7];

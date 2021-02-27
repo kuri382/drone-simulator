@@ -159,7 +159,7 @@ function init() {
   function animate() {
     star.rotation.z += 0.001;
     star.rotation.x += 0.0001;
-    //drone_all.position.y = sim_poz_z * 0.01;
+    drone_all.position.y = sim_poz_z * 0.01;
 
 
     renderer.render(scene, camera); // レンダリング

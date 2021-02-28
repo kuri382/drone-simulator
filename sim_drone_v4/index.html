@@ -30,15 +30,15 @@
     <link rel="apple-touch-icon" href="images/apple-touch-icon.png" sizes="192x192">
 
     <!--js libraries-->
-    <script type="text/javascript" src="js/main.js"></script>
+    <script type="text/javascript" src="js/Main.js"></script>
     <script type="text/javascript" src="js/pwaInit.js"></script>
 
     <script type="text/javascript" src="js/three.js"></script>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/dat-gui/0.7.7/dat.gui.min.js"></script>
     <script type="text/javascript" src="js/OrbitControls.js"></script>
 
-    <script type="text/javascript" src="js/calc_kinematics_v1.js"></script>
-    <script type="text/javascript" src="js/draw_sp.js"></script>
+    <script type="text/javascript" src="js/CalcKinematics.js"></script>
+    <script type="text/javascript" src="js/DrawAnimation.js"></script>
 
 
     <!--
@@ -52,10 +52,15 @@
 <body>
     <div class="canvas-wrapper">
         <canvas id = "myCanvas" style="z-index:0"></canvas>
-        <!--
-        <canvas id="ui">
-            <h1 style="color: black; z-index:1;">Sim Drone</h1>
-        </canvas>-->
+        <!-- button ui -->
+        <div style="position: absolute; top: 5px; right: 5px;">
+            <button id="animationToggle" style="margin: 8px; height: 25px; width: 150px;">
+              Pause Animation
+            </button>
+            <button id="rotationToggle" style="margin: 8px; height: 25px; width: 150px;">
+              Pause Rotation
+            </button>
+          </div>
     </div>
 </body>
 

@@ -217,8 +217,10 @@ function init() {
   // 毎フレーム時に実行されるループイベント
   function animate() {
     //背景
-    star.rotation.z += 0.001;
-    star.rotation.x += 0.0001;
+    if(isRotationActive==true){
+      star.rotation.z += 0.001;
+      star.rotation.x += 0.0001;
+    }
     //ローター回転数
     prop_1.rotation.y += rpm;
     prop_2.rotation.y -= rpm;
@@ -250,8 +252,6 @@ function init() {
 
     //options
     //var timer = Date.now() * options.camera.speed;
-    
-    
 
     renderer.render(scene, camera); // レンダリング
 
